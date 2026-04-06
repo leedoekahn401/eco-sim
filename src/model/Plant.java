@@ -20,7 +20,8 @@ public class Plant extends Living{
             if (targetX < 0 || targetX >= World.WIDTH || targetY < 0 || targetY >= World.HEIGHT) {
                 return;
             }
-            if(world.plantMap[targetX][targetY] == null){
+            Position target = new Position(targetX, targetY);
+            if(world.plantSpace.getLiving(target) == null){
                 Position pos = new Position(targetX, targetY);
                 Plant newPlant = new Plant(pos);
                 world.addLiving(newPlant);

@@ -12,6 +12,7 @@ public abstract class Living {
     public Living(Position position){
         this.position = position;
     }
+
     public Living(char color, double size, Position position, double energy, double repoRate) {
         this.color=color;
         this.size=size;

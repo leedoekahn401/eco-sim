@@ -3,15 +3,18 @@ package model;
 public class Position {
     double x;
     double y;
+
+    public Position(){};
+
     public Position(double x, double y) {
         this.x = x;
         this.y = y;
     }
     public int intX() {
-        return (int)x;
+        return (int)Math.round(x);
     }
     public int intY() {
-        return (int)y;
+        return (int)Math.round(y);
     }
 
     public double getX(){

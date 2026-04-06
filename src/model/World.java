@@ -10,37 +10,37 @@ public class World {
     public static final int MAX_ENTITY = WIDTH*HEIGHT;
     public List<Animal> animals = new ArrayList<>();
     public List<Plant> plants = new ArrayList<>();
-    public Plant[][] plantMap = new Plant[WIDTH][HEIGHT];
-    public Animal[][] animalMap = new Animal[WIDTH][HEIGHT];
+    public LivingSpace animalSpace =  new LivingSpace();
+    public LivingSpace plantSpace = new LivingSpace();
 
     public World() {
 
-    }
-
-    public boolean hasPlant(Position pos){
-        return plantMap[pos.intX()][pos.intY()]!=null;
     }
 
     public void addLiving(Living living) {
         if(living instanceof Plant) {
             if(plants.size() < MAX_ENTITY) {
                 plants.add((Plant) living);
-                plantMap[living.getPosition().intX()][living.getPosition().intY()] = (Plant) living;
+                plantSpace.place(living, living.getPosition());
             }
         }else if(living instanceof Animal) {
             if(animals.size() < MAX_ENTITY) {
                 animals.add((Animal) living);
-                animalMap[living.getPosition().intX()][living.getPosition().intY()] = (Animal) living;
+                animalSpace.place(living, living.getPosition());
             }
         }
     }
     public void removeLiving(Living living) {
         if(living instanceof Plant) {
-            plants.remove(living);
-            plantMap[living.getPosition().intX()][living.getPosition().intY()] = null;
+            if(plants.size() < MAX_ENTITY) {
+                plants.remove(living);
+                plantSpace.remove(living.getPosition());
+            }
         }else if(living instanceof Animal) {
-            animals.remove(living);
-            animalMap[living.getPosition().intX()][living.getPosition().intY()] = null;
+            if(animals.size() < MAX_ENTITY) {
+                animals.remove(living);
+                animalSpace.remove(living.getPosition());
+            }
         }
     }
 
