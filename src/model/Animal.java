@@ -5,6 +5,7 @@ public abstract class Animal extends Living {
     double metabol;
     int senseRadius;
     double repoThresh;
+    int wanderTimer =0;
 
     protected double direction;
 
@@ -56,24 +57,31 @@ public abstract class Animal extends Living {
     }
 
     public void hunt(Living living, World world){
-        Position dest = new Position(living.getPosition().intX(),living.getPosition().intY());
-        double dist = Math.sqrt(Math.pow(this.getPosition().getX()-dest.getX(),2)+Math.pow(this.getPosition().getY()-dest.getY(),2));
+        Position dest = new Position(living.getPosition().getX(), living.getPosition().getY());
+        double dist = Math.sqrt(Math.pow(this.getPosition().getX()-dest.getX(), 2) + Math.pow(this.getPosition().getY()-dest.getY(), 2));
         Position curPos = this.getPosition();
-        if(dist>speed){
+
+        if(dist > speed){
             double ratio = speed / dist;
             Position nextPos = new Position(
-                    this.getPosition().getX() + ratio * (dest.getX() - this.getPosition().getX()),
-                    this.getPosition().getY() + ratio * (dest.getY() - this.getPosition().getY())
+                    curPos.getX() + ratio * (dest.getX() - curPos.getX()),
+                    curPos.getY() + ratio * (dest.getY() - curPos.getY())
             );
-            if(world.animalSpace.getLiving(nextPos) == null){
-                return;
-            }
-            world.animalSpace.move(this,curPos,nextPos);
 
-        }else{
-            eat(world,living);
+            if (curPos.intX() != nextPos.intX() || curPos.intY() != nextPos.intY()) {
+                if(world.animalSpace.getLiving(nextPos) != null){
+                    return;
+                }
+                world.animalSpace.move(this, curPos, nextPos);
+            }
+            this.setPosition(nextPos);
+        } else {
+            eat(world, living);
+
+            if (curPos.intX() != dest.intX() || curPos.intY() != dest.intY()) {
+                world.animalSpace.move(this, curPos, dest);
+            }
             this.setPosition(dest);
-            world.animalSpace.move(this,curPos,dest);
         }
     }
 
@@ -87,15 +95,19 @@ public abstract class Animal extends Living {
         if (px < 0 || px >= World.WIDTH || py < 0 || py >= World.HEIGHT) return;
 
         Position nextPos = new Position(px, py);
-
-        if(world.animalSpace.getLiving(nextPos) == null){
-            return;
+        if (curPos.intX() != nextPos.intX() || curPos.intY() != nextPos.intY()) {
+            if(world.animalSpace.getLiving(nextPos) != null){
+                this.direction = Math.random() * 2 * Math.PI;
+                return;
+            }
+            world.animalSpace.move(this, curPos, nextPos);
         }
+
         this.setPosition(nextPos);
-        world.animalSpace.move(this, curPos, nextPos);
     }
 
     public void update(World world){
+        wanderTimer++;
         this.energy -= this.metabol*this.maxEnergy;
         if(this.energy<=0){
             world.removeLiving(this);
@@ -104,8 +116,12 @@ public abstract class Animal extends Living {
         Living target = sense(world);
         if(target != null){
             hunt(target,world);
+            wanderTimer=0;
         }else{
-            this.direction = Math.random()*2*Math.PI;
+            if(wanderTimer == 20){
+                this.direction = Math.random()*2*Math.PI;
+                wanderTimer = 0;
+            }
             move(world);
         }
         spawn(world);

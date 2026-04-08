@@ -12,11 +12,9 @@ public class Carnivore extends Animal {
     public void spawn(World world) {
         double chance = Math.random();
         if(chance < this.getRepoRate()&&this.energy>this.repoThresh){
-            if(Math.random() < this.getRepoRate()){
-                Position target = world.animalSpace.getEmptyAdjacent(this.getPosition());
-                if (target != null) {
-                    world.addLiving(new Carnivore(target));
-                }
+            Position target = world.animalSpace.getEmptyAdjacent(this.getPosition());
+            if (target != null) {
+                world.addLiving(new Carnivore(target));
             }
         }
     }
