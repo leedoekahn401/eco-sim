@@ -18,4 +18,27 @@ public class LivingSpace {
     public Living getLiving(Position position) {
         return grid[position.intX()][position.intY()];
     }
+    public Position getEmptyAdjacent(Position pos) {
+        int offsetX = (int)(Math.random() * 3) - 1;
+        int offsetY = (int)(Math.random() * 3) - 1;
+
+        if (offsetX == 0 && offsetY == 0) {
+            return null;
+        }
+
+        int targetX = pos.intX() + offsetX;
+        int targetY = pos.intY() + offsetY;
+
+        if (targetX < 0 || targetX >= World.WIDTH || targetY < 0 || targetY >= World.HEIGHT) {
+            return null;
+        }
+
+        Position target = new Position(targetX, targetY);
+
+        if (this.getLiving(target) == null) {
+            return target;
+        }
+
+        return null;
+    }
 }

@@ -1,11 +1,12 @@
 package model;
 public abstract class Living {
-    char color;
     double size;
     Position position;
     double energy;
+    double maxEnergy;
     double energyTrans = 0.1;
     double repoRate;
+
 
     public Living(){
     }
@@ -13,8 +14,7 @@ public abstract class Living {
         this.position = position;
     }
 
-    public Living(char color, double size, Position position, double energy, double repoRate) {
-        this.color=color;
+    public Living(double size, Position position, double energy, double maxEnergy,double repoRate) {
         this.size=size;
         this.energy = energy;
         this.position = position;
@@ -40,9 +40,6 @@ public abstract class Living {
         return energyTrans;
     }
 
-    public char getColor() {
-        return color;
-    }
     public double getRepoRate() {
         return repoRate;
     }

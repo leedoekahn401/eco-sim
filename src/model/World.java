@@ -32,15 +32,11 @@ public class World {
     }
     public void removeLiving(Living living) {
         if(living instanceof Plant) {
-            if(plants.size() < MAX_ENTITY) {
-                plants.remove(living);
-                plantSpace.remove(living.getPosition());
-            }
+            plants.remove(living);
+            plantSpace.remove(living.getPosition());
         }else if(living instanceof Animal) {
-            if(animals.size() < MAX_ENTITY) {
-                animals.remove(living);
-                animalSpace.remove(living.getPosition());
-            }
+            animals.remove(living);
+            animalSpace.remove(living.getPosition());
         }
     }
 

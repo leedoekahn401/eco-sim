@@ -11,10 +11,10 @@ public class Position {
         this.y = y;
     }
     public int intX() {
-        return (int)Math.round(x);
+        return (int)x;
     }
     public int intY() {
-        return (int)Math.round(y);
+        return (int)y;
     }
 
     public double getX(){
